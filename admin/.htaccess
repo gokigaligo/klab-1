@@ -1,0 +1,7 @@
+RewriteEngine on
+
+RewriteCond %{REQUEST_FILENAME}.php -f
+
+RewriteCond %{REQUEST_ULI} !/s
+
+RewriteRule ^(.*)$ $1\.php
