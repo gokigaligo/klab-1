@@ -190,7 +190,7 @@ function inviteMember()
 
 	if($db)
 	{
-		require_once('classes/sms/AfricasTalkingGateway.php');
+		require_once('sms.php');
 		$username   = "cmuhirwa";
 		$apikey     = "2b11603e7dc4c35a64bfdda3ad8d78e48db8a4afc9032a2a57209ba902a21154";
 		$recipients = '+25'.$invitedPhone;
@@ -272,7 +272,7 @@ function signup()
 	}
 	$results="";
 	// 'went to require sms class';
-	require_once('classes/sms/AfricasTalkingGateway.php');
+	require_once('sms.php');
 	$username   = "cmuhirwa";
 	$apikey     = "2b11603e7dc4c35a64bfdda3ad8d78e48db8a4afc9032a2a57209ba902a21154";
 	$recipients = '+25'.$phoneNumber;
