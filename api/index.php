@@ -190,11 +190,14 @@ function inviteMember()
 
 	if($db)
 	{
+		$gnamesql = $db->query("SELECT name FROM groups WHERE id = '$groupId' LIMIT 1");
+		$loopg = mysqli_fetch_array($gnamesql);
+		$groupName = $loopg['name'];
 		require_once('sms.php');
 		$username   = "cmuhirwa";
 		$apikey     = "2b11603e7dc4c35a64bfdda3ad8d78e48db8a4afc9032a2a57209ba902a21154";
 		$recipients = '+25'.$invitedPhone;
-		$message    = 'You have been invited to join a contribution group on uplus. Install uplus to start.';// Specify your AfricasTalking shortCode or sender id
+		$message    = 'You have been invited to join '.$groupName.' (a contribution group on uplus). Install uplus to start. on http://104.236.26.9/app/';// Specify your AfricasTalking shortCode or sender id
 		$from = "uplus";
 
 		$gateway    = new AfricasTalkingGateway($username, $apikey);
