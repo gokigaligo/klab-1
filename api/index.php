@@ -62,11 +62,12 @@ function createGroup()
 			$targetAmount, $perPerson,now(),
 			$adminId,'private','$groupTargetType','$perPersonType')") or die (mysqli_error());
 
+			$sqlid = $db->query("SELECT id FROM groups ORDER BY id DESC LIMIT 1") or die (mysqli_error());
+			$rowid = mysqli_fetch_array($sqlid);
+			$lastid = $rowid['id'];
 	if($db)
 	{
-		$sqlid = $db->query("SELECT id FROM groups ORDER BY id DESC LIMIT 1") or die (mysqli_error());
-		$rowid = mysqli_fetch_array($sqlid);
-		$lastid = $rowid['id'];
+		
 		$outCon->query("INSERT INTO `groups`(`groupId`, `accountNumber`, `bankId`)
 		VALUES('$lastid','$accountNumber','$bankId')")or die(mysqli_error());
 		
@@ -87,12 +88,16 @@ function createGroup()
 		}
 		else
 		{
-			echo 'money part not created';
+			// Rollback
+			$db->query("DELETE FROM groups WHERE id = '$lastid'");
+			echo 'Group not created, Money part not made';
 		}
 	}
 	else
 	{
-		'group not added';
+		// Rollback
+		$db->query("DELETE FROM groups WHERE id = '$lastid'");
+		echo 'Group not created';
 	}
 }
 
