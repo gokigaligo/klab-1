@@ -20,7 +20,11 @@ function listGroups()
 {
 		include("db.php");
 	$memberId		= mysqli_real_escape_string($db, $_POST['memberId']);
-	$sqlgroups 		= $db->query("SELECT groupId, syncstatus, groupName, groupTargetType, perPersonType, targetAmount, perPerson, adminId, adminName, groupDesc FROM members WHERE memberId = '$memberId'")or die(mysqli_error());
+	$sqlgroups 		= $db->query("SELECT  u.groupId, u.syncstatus, u.groupName, u.groupTargetType, u.perPersonType, u.targetAmount, u.perPerson, u.adminId, u.adminName, u.groupDesc, r.Balance groupBalance
+		FROM uplus.members u
+		INNER JOIN rtgs.groupbalance r 
+		WHERE u.groupId = r.groupId
+		AND u.memberId = '$memberId' group by u.groupId")or die(mysqli_error());
 	$groups 		= array();
 	WHILE($group 	= mysqli_fetch_array($sqlgroups))
 	{
