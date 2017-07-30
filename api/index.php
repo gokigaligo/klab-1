@@ -419,7 +419,7 @@ function contribute(){
 			else
 			{
 
-				 $result;
+				$result;
 				// FROM JSON TO PHP
 				$firstcheck 	= json_decode($result);
 				$id 			= mysqli_real_escape_string($db,$firstcheck->{'id'});
@@ -464,10 +464,9 @@ function contribute(){
 				       		"transactionId" => $contTransactionId,
 				       		"status" => $information
 				    	);
-					//header('Content-Type: application/json');
+					header('Content-Type: application/json');
 					$returnedinformation = json_encode($returnedinformation);
-					//echo $returnedinformation;
-					echo $result;
+					echo $returnedinformation;
 					
 			}
 		}
@@ -510,9 +509,7 @@ function checkstatus(){
 
 	$data = json_encode($data);
 	$data  = trim($data, '[');
-	
 	$data  = trim($data, ']');
-	//header('Content-Type: application/json');
 	$data;
 
 	$data = json_decode($data);
@@ -536,10 +533,51 @@ function checkstatus(){
 		$result;
 			// FROM JSON TO PHP
 		$firstcheck 	= json_decode($result);
+		$id 			= mysqli_real_escape_string($db,$firstcheck->{'id'});
+		$time 			= mysqli_real_escape_string($db,$firstcheck->{'time'});
+		$transactionId 	= mysqli_real_escape_string($db,$firstcheck->{'transactionId'});
+		$policyNumber 	= mysqli_real_escape_string($db,$firstcheck->{'policyNumber'});
+		$invoiceNumber 	= mysqli_real_escape_string($db,$firstcheck->{'invoiceNumber'});
+		$phone 			= mysqli_real_escape_string($db,$firstcheck->{'phone'});
+		$phone2 		= mysqli_real_escape_string($db,$firstcheck->{'phone2'});
+		$amount 		= mysqli_real_escape_string($db,$firstcheck->{'amount'});
+		$fname 			= mysqli_real_escape_string($db,$firstcheck->{'fname'});
+		$lname 			= mysqli_real_escape_string($db,$firstcheck->{'lname'});
+		$nationalId 	= mysqli_real_escape_string($db,$firstcheck->{'nationalId'});
 		$information 	= mysqli_real_escape_string($db,$firstcheck->{'information'});
-		$Update= $outCon->query("UPDATE grouptransactions SET status='NETWORK ERROR' WHERE id = '$transactionId'");
+		$information2 	= mysqli_real_escape_string($db,$firstcheck->{'information2'});
+		$agentName 		= mysqli_real_escape_string($db,$firstcheck->{'agentName'});
+		$agentId 		= mysqli_real_escape_string($db,$firstcheck->{'agentId'});
+		$feedback 		= mysqli_real_escape_string($db,$firstcheck->{'feedback'});
+		$balance 		= mysqli_real_escape_string($db,$firstcheck->{'balance'});
 		
-		echo $information ;
+
+
+		$sql = $outCon->query("INSERT INTO 
+			mnoapi(
+			apiId,
+			`time`, `transactionId`, `policyNumber`, `invoiceNumber`,
+			 `phone`, `phone2`, `amount`, `fname`, 
+			 `lname`, `nationalId`, `information`, `information2`, 
+			 `agentName`, `agentId`, `feedback`, `balance`, myid)
+			VALUES(
+			$id, 
+			'$time', $transactionId, '$policyNumber', '$invoiceNumber',
+			'$phone', '$phone2', '$amount', '$fname', 
+			'$lname', '$nationalId', '$information', '$information2', 
+			'$agentName', '$agentId', '$feedback', '$balance', $contTransactionId
+			)
+		")or die(mysqli_error($outCon));
+
+			$returnedinformation	= array();
+		
+			$returnedinformation[] = array(
+		       		"transactionId" => $contTransactionId,
+		       		"status" => $information
+		    	);
+			header('Content-Type: application/json');
+			$returnedinformation = json_encode($returnedinformation);
+			echo $returnedinformation;
 	}
 }
 ?>
