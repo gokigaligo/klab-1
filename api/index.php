@@ -18,7 +18,7 @@ else
 
 function listGroups()
 {
-		include("db.php");
+	include("db.php");
 	$memberId		= mysqli_real_escape_string($db, $_POST['memberId']);
 	$sqlgroups 		= $db->query("SELECT  u.groupId, u.syncstatus, u.groupName, u.groupTargetType, u.perPersonType, u.targetAmount, u.perPerson, u.adminId, u.adminName, u.groupDesc, r.Balance groupBalance
 		FROM uplus.members u
@@ -192,6 +192,11 @@ function inviteMember()
 			$invitedArray = mysqli_fetch_array($sql);
 			$invitedId = $invitedArray['id'];
 
+			
+			// CEATE THE MONEY ACCOUNT FOR THE PERSON
+			$sqlmoney = $outCon->query("INSERT INTO members ");
+
+
 		}
 	}
 	
@@ -324,6 +329,183 @@ function updateProfile(){
 	}
 }
 
+function contribute(){
 
+	$memberId	= $_POST['memberId'];
+	$groupId	= $_POST['groupId'];
+	$amount 	= $_POST['amount'];
+	$fromPhone	= $_POST['fromPhone'];
+	$bankId		= $_POST['bankId'];
+
+	require('db.php');
+	// GET USER'S INFROMATION
+	include("db.php");
+	$sql = $db->query("SELECT groupName, memberName FROM members WHERE groupId = '$groupId' AND memberId = '$memberId' LIMIT 1");
 	
+	if($db)
+	{
+		while($row = mysqli_fetch_array($sql))
+		{
+			$groupName 		= $row['groupName'];
+			$memberName		= $row['memberName'];
+		}
+
+		// SAVE THE TRANSACTION TO THE UPLUS DATABASE
+
+		$outCon->query("INSERT INTO grouptransactions(
+			memberId, groupId, amount, fromPhone, 
+			bankId, operation, status)
+		 	VALUES ('$memberId', '$groupId', '$amount', '$fromPhone', 
+		 	'$bankId', 'DEBIT', 'CALLED')")
+		 	 or mysqli_error();
+
+		if($outCon){
+			$sqlRemovedId= $outCon->query("SELECT id FROM grouptransactions ORDER BY id DESC LIMIT 1");
+			$remId = mysqli_fetch_array($sqlRemovedId);
+			$contTransactionId = $remId['id'];
+
+			//Get the bank name
+			$sqlNotifyBank 	= $outCon->query("SELECT name FROM banks WHERE id = '$bankId'");
+			$rowNotifyBank 	= mysqli_fetch_array($sqlNotifyBank);
+			$notifyBank 	= $rowNotifyBank['name'];
+			$notifyTitle 	= $groupName;
+
+			// CALL API
+
+			$url = 'https://lightapi.torque.co.rw/requestpayment/';
+		
+			$data = array();
+			$data["agentName"] 		= "UPLUS";
+			$data["agentId"] 		= "0784848236";
+			$data["phone"] 			= $fromPhone;
+		    $data["phone2"] 		= '';
+			$data["amount"] 		= $amount;
+			$data["fname"] 			= $memberName;
+			$data["policyNumber"]	= ''.$groupName.' / group: '.$memberName.'';
+		    $options = array(
+				'http' => array(
+					'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+					'method'  => 'POST',
+					'content' => http_build_query($data)
+				)
+			);
+			$context  = stream_context_create($options);
+			$result = file_get_contents($url, false, $context);
+			if ($result === FALSE) 
+			{ 
+				$Update= $outCon->query("UPDATE grouptransactions SET status='NETWORK ERROR' WHERE id = '$contTransactionId'");
+				
+				echo 'Sorry! We had some network problem connecting to '.$notifyBank.'.<br> Please try again.';	
+			}
+			else
+			{
+
+				$result;
+				// FROM JSON TO PHP
+				$firstcheck 	= json_decode($result);
+				$time 			= mysqli_real_escape_string($db,$firstcheck->{'time'});
+				$transactionId 	= mysqli_real_escape_string($db,$firstcheck->{'transactionId'});
+				$policyNumber 	= mysqli_real_escape_string($db,$firstcheck->{'policyNumber'});
+				$invoiceNumber 	= mysqli_real_escape_string($db,$firstcheck->{'invoiceNumber'});
+				$phone 			= mysqli_real_escape_string($db,$firstcheck->{'phone'});
+				$phone2 		= mysqli_real_escape_string($db,$firstcheck->{'phone2'});
+				$amount 		= mysqli_real_escape_string($db,$firstcheck->{'amount'});
+				$fname 			= mysqli_real_escape_string($db,$firstcheck->{'fname'});
+				$lname 			= mysqli_real_escape_string($db,$firstcheck->{'lname'});
+				$nationalId 	= mysqli_real_escape_string($db,$firstcheck->{'nationalId'});
+				$information 	= mysqli_real_escape_string($db,$firstcheck->{'information'});
+				$information2 	= mysqli_real_escape_string($db,$firstcheck->{'information2'});
+				$agentName 		= mysqli_real_escape_string($db,$firstcheck->{'agentName'});
+				$agentId 		= mysqli_real_escape_string($db,$firstcheck->{'agentId'});
+				$feedback 		= mysqli_real_escape_string($db,$firstcheck->{'feedback'});
+				$balance 		= mysqli_real_escape_string($db,$firstcheck->{'balance'});
+				
+
+
+				$outCon->query("INSERT INTO 
+					mnoapi(
+					`time`, `transactionId`, `policyNumber`, `invoiceNumber`,
+					 `phone`, `phone2`, `amount`, `fname`, 
+					 `lname`, `nationalId`, `information`, `information2`, 
+					 `agentName`, `agentId`, `feedback`, `balance`, myid)
+					VALUES(
+					'$time', '$transactionId', '$policyNumber', '$invoiceNumber',
+					'$phone', '$phone2', '$amount', '$fname', 
+					'$lname', '$nationalId', '$information', '$information2', 
+					'$agentName', '$agentId', '$feedback', '$balance', '$contTransactionId'
+					)
+				")or die(mysqli_error());
+
+					$returnedinformation	= array();
+				
+					$returnedinformation[] = array(
+				       		"transactionId" => $contTransactionId,
+				       		"status" => $information
+				    	);
+					header('Content-Type: application/json');
+					$returnedinformation = json_encode($returnedinformation);
+					echo $returnedinformation;
+			}
+		}
+		else{
+			echo 'error inserting a transation';
+		}
+	}
+}
+	
+function checkstatus(){
+	$transactionId = $_POST['transactionId'];
+	
+	require('db.php');
+	$sql = $outCon->query("SELECT * FROM mnoapi WHERE myid = '$transactionId' ORDER BY id DESC LIMIT 1");
+		// CALL API
+	$url = 'https://lightapi.torque.co.rw/requestpayment/';
+	$data = array();
+	while($row = mysqli_fetch_array($sql))
+	{
+		$data[] = array(
+    		"time"			=> $row['time'],
+    		"transactionId" =>  (int)  $row['transactionId'],
+		    "policyNumber" 	=> $row['policyNumber'],
+		    "invoiceNumber" => $row['invoiceNumber'],
+		    "phone" 		=>  (int)  $row['phone'],
+		    "phone2" 		=>  (int) $row['phone2'],
+		    "amount" 		=> (int) $row['amount'],
+		    "fname" 		=> $row['fname'],
+		    "lname" 		=> $row['lname'],
+		    "nationalId" 	=> $row['nationalId'],
+		    "information" 	=> $row['information'],
+		    "information2" 	=> $row['information2'],
+		    "agentName" 	=> $row['agentName'],
+		    "agentId" 		=> $row['agentId'],
+		    "feedback" 		=> $row['feedback'],
+		    "balance" 		=> $row['balance']
+		    );
+	}
+	$options = array(
+		'http' => array(
+			'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+			'method'  => 'POST',
+			'content' => http_build_query($data)
+		)
+	);
+	$context  = stream_context_create($options);
+	$result = file_get_contents($url, false, $context);
+	if ($result === FALSE) 
+	{ 
+		$Update= $outCon->query("UPDATE grouptransactions SET status='NETWORK ERROR' WHERE id = '$transactionId'");
+		
+		echo 'Sorry! We had some network problem connecting to '.$notifyBank.'.<br> Please try again.';	
+	}
+	else
+	{
+		$result;
+			// FROM JSON TO PHP
+		$firstcheck 	= json_decode($result);
+		$information 	= mysqli_real_escape_string($db,$firstcheck->{'information'});
+		$Update= $outCon->query("UPDATE grouptransactions SET status='NETWORK ERROR' WHERE id = '$transactionId'");
+		
+		echo $information ;
+	}
+}
 ?>
