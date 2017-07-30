@@ -187,7 +187,7 @@ function inviteMember()
 	}
 	else
 	{
-		$code = rand(0000, 9999);
+		//$code = rand(0000, 9999);
 		$db->query("INSERT INTO 
 			users (phone,createdBy,createdDate, password) 
 			VALUES  ('$invitedPhone', '$invitorId', now(), '$code')
@@ -203,7 +203,7 @@ function inviteMember()
 		}
 	}
 
-	echo $invitedId
+	echo $invitedId;
 	// CHECK IF THE USER IS ALREADY IN THE GROUP
 	/*$sql = $db->query("SELECT * FROM groupuser WHERE groupId ='$groupId' AND userId='$invitedId'");
 	$checkExits = mysqli_num_rows($sql);
