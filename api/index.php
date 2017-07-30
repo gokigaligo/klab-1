@@ -504,6 +504,8 @@ function checkstatus(){
 	}
 
 	$data = json_encode($data);
+	$data  = trim($data, '[');
+	$data  = trim($data, ']');
 	echo $data;
 	/*$options = array(
 		'http' => array(
