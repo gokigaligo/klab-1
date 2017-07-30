@@ -467,7 +467,7 @@ function contribute(){
 					header('Content-Type: application/json');
 					$returnedinformation = json_encode($returnedinformation);
 					echo $returnedinformation;
-					*/
+					
 			}
 		}
 		else{
