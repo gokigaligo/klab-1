@@ -173,9 +173,9 @@ function deleteGroup()
 function inviteMember()
 {
 	require('db.php');
-	echo 'groupId '.$groupId			= mysqli_real_escape_string($db, $_POST['groupId']);
-	echo 'invitorId '.$invitorId			= mysqli_real_escape_string($db, $_POST['invitorId']);
-	echo 'invitedPhone '.$invitedPhone		= mysqli_real_escape_string($db, $_POST['invitedPhone']);
+	echo ' -> groupId '.$groupId			= mysqli_real_escape_string($db, $_POST['groupId']);
+	echo '<br/> -> invitorId '.$invitorId			= mysqli_real_escape_string($db, $_POST['invitorId']);
+	echo '<br/> -> invitedPhone '.$invitedPhone		= mysqli_real_escape_string($db, $_POST['invitedPhone']);
 	
 }
 
