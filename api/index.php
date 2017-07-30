@@ -173,10 +173,10 @@ function deleteGroup()
 function inviteMember()
 {
 	require('db.php');
-	echo 'FgId '.$groupId			= mysqli_real_escape_string($db, $_POST['groupId']);
-	$invitorId			= mysqli_real_escape_string($db, $_POST['invitorId']);
-	$invitedPhone		= mysqli_real_escape_string($db, $_POST['invitedPhone']);
-	$sql = $db->query("SELECT id FROM users WHERE phone =  $invitedPhone");
+	echo 'groupId '.$groupId			= mysqli_real_escape_string($db, $_POST['groupId']);
+	echo 'invitorId '.$invitorId			= mysqli_real_escape_string($db, $_POST['invitorId']);
+	echo 'invitedPhone '.$invitedPhone		= mysqli_real_escape_string($db, $_POST['invitedPhone']);
+	/*$sql = $db->query("SELECT id FROM users WHERE phone =  $invitedPhone");
 	$countUsers = mysqli_num_rows($sql);
 	if($countUsers > 0)
 	{
@@ -244,7 +244,7 @@ function inviteMember()
 		{
 			'The user is not invited';
 		}
-	}
+	}*/
 }
 
 function listMembers()
