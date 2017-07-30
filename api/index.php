@@ -200,38 +200,49 @@ function inviteMember()
 
 		}
 	}
-	
-	$db->query("INSERT INTO groupuser (joined, groupId, userId, createdBy, createdDate) VALUES ('yes','$groupId','$invitedId','$invitorId', now())");
 
-	if($db)
+	// CHECK IF THE USER IS ALREADY IN THE GROUP
+	$sql = $db->query("SELECT * FROM groupuser WHERE groupId = AND userId");
+	$checkExits = mysqli_num_rows($sql);
+	if($checkExits > 0)
 	{
-		$gnamesql = $db->query("SELECT groupName FROM groups WHERE id = '$groupId' LIMIT 1");
-		$loopg 		= mysqli_fetch_array($gnamesql);
-		$groupName = $loopg['groupName'];
-		require_once('sms.php');
-		$username   = "cmuhirwa";
-		$apikey     = "2b11603e7dc4c35a64bfdda3ad8d78e48db8a4afc9032a2a57209ba902a21154";
-		$recipients = '+25'.$invitedPhone;
-		$message    = 'You have been invited to join '.$groupName.' (a contribution group on uplus). Install uplus to start. on http://104.236.26.9/app/';// Specify your AfricasTalking shortCode or sender id
-		$from = "uplus";
-
-		$gateway    = new AfricasTalkingGateway($username, $apikey);
-
-		try 
-		{
-			$results = $gateway->sendMessage($recipients, $message, $from);
-			echo 'Member with '.$invitedPhone.' Is Invited';
-			//listGroups();
-		}
-		catch (AfricasTalkingGatewayException $e)
-		{
-			$results.="Encountered an error while sending: ".$e->getMessage();
-			echo 'error';
-		}
+		echo 'This member with '.$invitedPhone.' Is already a member of this group';
 	}
 	else
 	{
-		'The user is not invited';
+	
+		$db->query("INSERT INTO groupuser (joined, groupId, userId, createdBy, createdDate) VALUES ('yes','$groupId','$invitedId','$invitorId', now())");
+
+		if($db)
+		{
+			$gnamesql = $db->query("SELECT groupName FROM groups WHERE id = '$groupId' LIMIT 1");
+			$loopg 		= mysqli_fetch_array($gnamesql);
+			$groupName = $loopg['groupName'];
+			require_once('sms.php');
+			$username   = "cmuhirwa";
+			$apikey     = "2b11603e7dc4c35a64bfdda3ad8d78e48db8a4afc9032a2a57209ba902a21154";
+			$recipients = '+25'.$invitedPhone;
+			$message    = 'You have been invited to join '.$groupName.' (a contribution group on uplus). Install uplus to start. on http://104.236.26.9/app/';// Specify your AfricasTalking shortCode or sender id
+			$from = "uplus";
+
+			$gateway    = new AfricasTalkingGateway($username, $apikey);
+
+			try 
+			{
+				$results = $gateway->sendMessage($recipients, $message, $from);
+				echo 'Member with '.$invitedPhone.' Is Invited';
+				//listGroups();
+			}
+			catch (AfricasTalkingGatewayException $e)
+			{
+				$results.="Encountered an error while sending: ".$e->getMessage();
+				echo 'error';
+			}
+		}
+		else
+		{
+			'The user is not invited';
+		}
 	}
 }
 
