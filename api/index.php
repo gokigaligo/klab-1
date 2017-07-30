@@ -429,10 +429,10 @@ function contribute(){
 					 `lname`, `nationalId`, `information`, `information2`, 
 					 `agentName`, `agentId`, `feedback`, `balance`, myid)
 					VALUES(
-					now(), 6554, '$policyNumber', '$invoiceNumber',
+					now(), $transactionId, '$policyNumber', '$invoiceNumber',
 					'$phone', '$phone2', '$amount', '$fname', 
 					'$lname', '$nationalId', '$information', '$information2', 
-					'$agentName', '$agentId', '$feedback', '$balance', 777
+					'$agentName', '$agentId', '$feedback', '$balance', $contTransactionId
 					)
 				")or die(mysqli_error());
 
