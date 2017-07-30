@@ -451,7 +451,7 @@ function contribute(){
 					 `agentName`, `agentId`, `feedback`, `balance`, myid)
 					VALUES(
 					$id, 
-					$time, $transactionId, '$policyNumber', '$invoiceNumber',
+					'$time', $transactionId, '$policyNumber', '$invoiceNumber',
 					'$phone', '$phone2', '$amount', '$fname', 
 					'$lname', '$nationalId', '$information', '$information2', 
 					'$agentName', '$agentId', '$feedback', '$balance', $contTransactionId
