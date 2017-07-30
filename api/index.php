@@ -510,7 +510,9 @@ function checkstatus(){
 
 	$data = json_encode($data);
 	$data  = trim($data, '[');
+	
 	$data  = trim($data, ']');
+	header('Content-Type: application/json');
 	echo $data;
 	/*$options = array(
 		'http' => array(
