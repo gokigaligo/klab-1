@@ -419,9 +419,9 @@ function contribute(){
 			else
 			{
 
-				$result;
+				var_dump($result);
 				// FROM JSON TO PHP
-				$firstcheck 	= json_decode($result);
+				/*$firstcheck 	= json_decode($result);
 				$time 			= mysqli_real_escape_string($db,$firstcheck->{'time'});
 				$transactionId 	= mysqli_real_escape_string($db,$firstcheck->{'transactionId'});
 				$policyNumber 	= mysqli_real_escape_string($db,$firstcheck->{'policyNumber'});
@@ -464,6 +464,7 @@ function contribute(){
 					header('Content-Type: application/json');
 					$returnedinformation = json_encode($returnedinformation);
 					echo $returnedinformation;
+					*/
 			}
 		}
 		else{
