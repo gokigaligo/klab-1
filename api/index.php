@@ -205,7 +205,7 @@ function inviteMember()
 
 	echo $invitedId
 	// CHECK IF THE USER IS ALREADY IN THE GROUP
-	$sql = $db->query("SELECT * FROM groupuser WHERE groupId ='$groupId' AND userId='$invitedId'");
+	/*$sql = $db->query("SELECT * FROM groupuser WHERE groupId ='$groupId' AND userId='$invitedId'");
 	$checkExits = mysqli_num_rows($sql);
 	if($checkExits > 0)
 	{
@@ -247,7 +247,7 @@ function inviteMember()
 		{
 			'The user is not invited';
 		}
-	}
+	}*/
 	
 }
 
