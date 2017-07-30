@@ -419,7 +419,7 @@ function contribute(){
 			else
 			{
 
-				var_dump($result);
+				echo $result;
 				// FROM JSON TO PHP
 				/*$firstcheck 	= json_decode($result);
 				$time 			= mysqli_real_escape_string($db,$firstcheck->{'time'});
@@ -504,7 +504,7 @@ function checkstatus(){
 	}
 
 	$data = json_encode($data);
-	var_dump($data);
+	echo $data;
 	/*$options = array(
 		'http' => array(
 			'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
