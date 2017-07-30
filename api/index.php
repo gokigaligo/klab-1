@@ -210,6 +210,7 @@ function inviteMember()
 	}
 	else
 	{
+		echo $groupId.' , '.$invitedId.' , '.$invitorId;
 	
 		$sql = $db->query("INSERT INTO groupuser (joined, groupId, userId, createdBy, createdDate) VALUES ('yes','$groupId','$invitedId','$invitorId', now())")or die(mysqli_error());
 
