@@ -211,7 +211,7 @@ function inviteMember()
 	else
 	{
 	
-		$db->query("INSERT INTO groupuser (joined, groupId, userId, createdBy, createdDate) VALUES ('yes','$groupId','$invitedId','$invitorId', now())");
+		$sql = $db->query("INSERT INTO groupuser (joined, groupId, userId, createdBy, createdDate) VALUES ('yes','$groupId','$invitedId','$invitorId', now())")or die(mysqli_error());
 
 		if($db)
 		{
