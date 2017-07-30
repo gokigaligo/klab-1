@@ -429,7 +429,7 @@ function contribute(){
 					 `lname`, `nationalId`, `information`, `information2`, 
 					 `agentName`, `agentId`, `feedback`, `balance`, myid)
 					VALUES(
-					$time, $transactionId, '$policyNumber', '$invoiceNumber',
+					now(), $transactionId, '$policyNumber', '$invoiceNumber',
 					'$phone', '$phone2', '$amount', '$fname', 
 					'$lname', '$nationalId', '$information', '$information2', 
 					'$agentName', '$agentId', '$feedback', '$balance', $contTransactionId
