@@ -185,7 +185,8 @@ function inviteMember()
 	}
 	else
 	{
-		$db->query("INSERT INTO users (phone,createdBy,createdDate) VALUES  ('$invitedPhone', '$invitorId', now())");
+		$code = rand(0000, 9999);
+		$db->query("INSERT INTO users (phone,createdBy,createdDate, password) VALUES  ('$invitedPhone', '$invitorId', now(), '$code')");
 		if($db)
 		{
 			$sql = $db->query("SELECT id FROM users ORDER BY id DESC LIMIT 1");
@@ -204,9 +205,9 @@ function inviteMember()
 
 	if($db)
 	{
-		$gnamesql = $db->query("SELECT name FROM groups WHERE id = '$groupId' LIMIT 1");
-		$loopg = mysqli_fetch_array($gnamesql);
-		$groupName = $loopg['name'];
+		$gnamesql = $db->query("SELECT groupName FROM groups WHERE id = '$groupId' LIMIT 1");
+		$loopg 		= mysqli_fetch_array($gnamesql);
+		$groupName = $loopg['groupName'];
 		require_once('sms.php');
 		$username   = "cmuhirwa";
 		$apikey     = "2b11603e7dc4c35a64bfdda3ad8d78e48db8a4afc9032a2a57209ba902a21154";
