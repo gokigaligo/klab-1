@@ -177,7 +177,6 @@ function inviteMember()
 	$invitorId			= mysqli_real_escape_string($db, $_POST['invitorId']);
 	$invitedPhone		= mysqli_real_escape_string($db, $_POST['invitedPhone']);
 
-	echo 'i got the data of: '.$groupId;
 	$sql = $db->query("SELECT id FROM users WHERE phone =  $invitedPhone") or (mysqli_error());
 	$countUsers = mysqli_num_rows($sql);
 	if($countUsers > 0)
@@ -203,7 +202,6 @@ function inviteMember()
 		}
 	}
 
-	echo $invitedId;
 	// CHECK IF THE USER IS ALREADY IN THE GROUP
 	$sql = $db->query("SELECT * FROM groupuser WHERE groupId ='$groupId' AND userId='$invitedId'");
 	$checkExits = mysqli_num_rows($sql);
