@@ -186,7 +186,7 @@ function inviteMember()
 	}
 	else
 	{
-		//$code = rand(0000, 9999);
+		$code = rand(0000, 9999);
 		$db->query("INSERT INTO 
 			users (phone,createdBy,createdDate, password) 
 			VALUES  ('$invitedPhone', '$invitorId', now(), '$code')
@@ -207,7 +207,7 @@ function inviteMember()
 	$checkExits = mysqli_num_rows($sql);
 	if($checkExits > 0)
 	{
-		echo 'This member with '.$invitedPhone.' Is already a member of this group';
+		echo 'This member with '.$invitedPhone.', is already a member of this group';
 	}
 	else
 	{
