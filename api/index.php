@@ -353,7 +353,7 @@ function contribute(){
 	$memberId	= $_POST['memberId'];
 	$groupId	= $_POST['groupId'];
 	$amount 	= $_POST['amount'];
-	echo $fromPhone	= $_POST['fromPhone'];
+	$fromPhone	= $_POST['fromPhone'];
 	$bankId		= $_POST['bankId'];
 
 	require('db.php');
