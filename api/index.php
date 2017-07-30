@@ -464,7 +464,7 @@ function contribute(){
 				       		"transactionId" => $contTransactionId,
 				       		"status" => $information
 				    	);
-					header('Content-Type: application/json');
+					//header('Content-Type: application/json');
 					$returnedinformation = json_encode($returnedinformation);
 					//echo $returnedinformation;
 					echo $result;
@@ -512,8 +512,8 @@ function checkstatus(){
 	$data  = trim($data, '[');
 	
 	$data  = trim($data, ']');
-	header('Content-Type: application/json');
-	echo $data;
+	//header('Content-Type: application/json');
+	$data;
 	/*$options = array(
 		'http' => array(
 			'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
