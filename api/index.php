@@ -419,9 +419,9 @@ function contribute(){
 			else
 			{
 
-				echo $result;
+				 $result;
 				// FROM JSON TO PHP
-				/*$firstcheck 	= json_decode($result);
+				$firstcheck 	= json_decode($result);
 				$id 			= mysqli_real_escape_string($db,$firstcheck->{'id'});
 				$time 			= mysqli_real_escape_string($db,$firstcheck->{'time'});
 				$transactionId 	= mysqli_real_escape_string($db,$firstcheck->{'transactionId'});
@@ -466,8 +466,8 @@ function contribute(){
 				    	);
 					header('Content-Type: application/json');
 					$returnedinformation = json_encode($returnedinformation);
-					echo $returnedinformation;
-					*/
+					//echo $returnedinformation;
+					echo $result;
 					
 			}
 		}
@@ -511,7 +511,7 @@ function checkstatus(){
 	$data = json_encode($data);
 	$data  = trim($data, '[');
 	$data  = trim($data, ']');
-	 $data;
+	echo $data;
 	/*$options = array(
 		'http' => array(
 			'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
