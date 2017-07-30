@@ -484,11 +484,11 @@ function checkstatus(){
 	{
 		$data[] = array(
     		"time"			=> $row['time'],
-    		"transactionId" =>  (int)  $row['transactionId'],
+    		"transactionId" => (int)  $row['transactionId'],
 		    "policyNumber" 	=> $row['policyNumber'],
 		    "invoiceNumber" => $row['invoiceNumber'],
-		    "phone" 		=>  (int)  $row['phone'],
-		    "phone2" 		=>  (int) $row['phone2'],
+		    "phone" 		=> (int) $row['phone'],
+		    "phone2" 		=> (int) $row['phone2'],
 		    "amount" 		=> (int) $row['amount'],
 		    "fname" 		=> $row['fname'],
 		    "lname" 		=> $row['lname'],
@@ -501,7 +501,10 @@ function checkstatus(){
 		    "balance" 		=> $row['balance']
 		    );
 	}
-	$options = array(
+
+	$data = json_encode($data);
+	var_dump($data);
+	/*$options = array(
 		'http' => array(
 			'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
 			'method'  => 'POST',
@@ -525,6 +528,6 @@ function checkstatus(){
 		$Update= $outCon->query("UPDATE grouptransactions SET status='NETWORK ERROR' WHERE id = '$transactionId'");
 		
 		echo $information ;
-	}
+	}*/
 }
 ?>
