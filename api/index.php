@@ -511,7 +511,7 @@ function checkstatus(){
 	$data = json_encode($data);
 	$data  = trim($data, '[');
 	$data  = trim($data, ']');
-	echo $data;
+	 $data;
 	/*$options = array(
 		'http' => array(
 			'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
