@@ -419,9 +419,10 @@ function contribute(){
 			else
 			{
 
-				echo $result;
+				$result;
 				// FROM JSON TO PHP
-				/*$firstcheck 	= json_decode($result);
+				$firstcheck 	= json_decode($result);
+				$id 			= mysqli_real_escape_string($db,$firstcheck->{'id'});
 				$time 			= mysqli_real_escape_string($db,$firstcheck->{'time'});
 				$transactionId 	= mysqli_real_escape_string($db,$firstcheck->{'transactionId'});
 				$policyNumber 	= mysqli_real_escape_string($db,$firstcheck->{'policyNumber'});
@@ -443,12 +444,14 @@ function contribute(){
 
 				$sql = $outCon->query("INSERT INTO 
 					mnoapi(
+					apiId,
 					`time`, `transactionId`, `policyNumber`, `invoiceNumber`,
 					 `phone`, `phone2`, `amount`, `fname`, 
 					 `lname`, `nationalId`, `information`, `information2`, 
 					 `agentName`, `agentId`, `feedback`, `balance`, myid)
 					VALUES(
-					now(), $transactionId, '$policyNumber', '$invoiceNumber',
+					$id, 
+					$time, $transactionId, '$policyNumber', '$invoiceNumber',
 					'$phone', '$phone2', '$amount', '$fname', 
 					'$lname', '$nationalId', '$information', '$information2', 
 					'$agentName', '$agentId', '$feedback', '$balance', $contTransactionId
