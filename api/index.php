@@ -513,8 +513,10 @@ function checkstatus(){
 	
 	$data  = trim($data, ']');
 	//header('Content-Type: application/json');
-	echo $data;
-	/*$options = array(
+	$data;
+
+	$data = json_decode($data);
+	$options = array(
 		'http' => array(
 			'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
 			'method'  => 'POST',
@@ -538,6 +540,6 @@ function checkstatus(){
 		$Update= $outCon->query("UPDATE grouptransactions SET status='NETWORK ERROR' WHERE id = '$transactionId'");
 		
 		echo $information ;
-	}*/
+	}
 }
 ?>
