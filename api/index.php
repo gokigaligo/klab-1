@@ -487,8 +487,9 @@ function checkstatus(){
 	while($row = mysqli_fetch_array($sql))
 	{
 		$data[] = array(
+    		"id"			=> (int) $row['apiId'],
     		"time"			=> $row['time'],
-    		"transactionId" => (int)  $row['transactionId'],
+    		"transactionId" => (int) $row['transactionId'],
 		    "policyNumber" 	=> $row['policyNumber'],
 		    "invoiceNumber" => $row['invoiceNumber'],
 		    "phone" 		=> (int) $row['phone'],
