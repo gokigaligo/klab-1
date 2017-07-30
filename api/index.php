@@ -371,12 +371,12 @@ function contribute(){
 
 		// SAVE THE TRANSACTION TO THE UPLUS DATABASE
 
-		$outCon->query("INSERT INTO grouptransactions(
+		$sql = $outCon->query("INSERT INTO grouptransactions(
 			memberId, groupId, amount, fromPhone, 
 			bankId, operation, status)
 		 	VALUES ('$memberId', '$groupId', '$amount', '$fromPhone', 
 		 	'$bankId', 'DEBIT', 'CALLED')")
-		 	 or mysqli_error();
+		 	 or mysqli_error($outCon);
 
 		if($outCon){
 			$sqlRemovedId= $outCon->query("SELECT id FROM grouptransactions ORDER BY id DESC LIMIT 1");
@@ -451,7 +451,7 @@ function contribute(){
 					 `agentName`, `agentId`, `feedback`, `balance`, myid)
 					VALUES(
 					$id, 
-					'$time', $transactionId, '$policyNumber', '$invoiceNumber',
+					'$time', '$transactionId', '$policyNumber', '$invoiceNumber',
 					'$phone', '$phone2', '$amount', '$fname', 
 					'$lname', '$nationalId', '$information', '$information2', 
 					'$agentName', '$agentId', '$feedback', '$balance', $contTransactionId
@@ -562,7 +562,7 @@ function checkstatus(){
 			 `agentName`, `agentId`, `feedback`, `balance`, myid)
 			VALUES(
 			$id, 
-			'$time', $transactionId, '$policyNumber', '$invoiceNumber',
+			'$time', '$transactionId', '$policyNumber', '$invoiceNumber',
 			'$phone', '$phone2', '$amount', '$fname', 
 			'$lname', '$nationalId', '$information', '$information2', 
 			'$agentName', '$agentId', '$feedback', '$balance', $myId
