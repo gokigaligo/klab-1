@@ -49,6 +49,10 @@ function createGroup()
 	$adminId			= mysqli_real_escape_string($db, $_POST['adminId']);
 	$accountNumber		= mysqli_real_escape_string($db, $_POST['accountNumber']);
 	$bankId				= mysqli_real_escape_string($db, $_POST['bankId']);
+	if($accountNumber == ""){
+		$accountNumber = 0;
+		$bankId = 1;
+	}
 	
 	$sqliAdmin = $db->query("SELECT phone FROM users WHERE id = '$adminId'");
 	$countAdmins = mysqli_num_rows($sqliAdmin);
@@ -211,8 +215,7 @@ function inviteMember()
 	}
 	else
 	{
-		//echo 'GroupId: '.$groupId.' , InvetedId: '.$invitedId.' , InvitorId: '.$invitorId;
-	
+		
 		$sql = $db->query("INSERT INTO groupuser (joined, groupId, userId, createdBy, createdDate) VALUES ('yes','$groupId','$invitedId','$invitorId', now())")or die(mysqli_error());
 
 		if($db)
@@ -232,7 +235,7 @@ function inviteMember()
 			try 
 			{
 				$results = $gateway->sendMessage($recipients, $message, $from);
-				echo 'Member with '.$invitedPhone.' Is Invited';
+				echo 'Member with '.$invitedPhone.' is Invited';
 				//listGroups();
 			}
 			catch (AfricasTalkingGatewayException $e)
@@ -438,7 +441,7 @@ function contribute(){
 				
 
 
-				$outCon->query("INSERT INTO 
+				$sql = $outCon->query("INSERT INTO 
 					mnoapi(
 					`time`, `transactionId`, `policyNumber`, `invoiceNumber`,
 					 `phone`, `phone2`, `amount`, `fname`, 
@@ -450,7 +453,7 @@ function contribute(){
 					'$lname', '$nationalId', '$information', '$information2', 
 					'$agentName', '$agentId', '$feedback', '$balance', $contTransactionId
 					)
-				")or die(mysqli_error());
+				")or die(mysqli_error($outCon));
 
 					$returnedinformation	= array();
 				
