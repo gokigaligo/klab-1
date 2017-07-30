@@ -187,18 +187,22 @@ function inviteMember()
 	else
 	{
 		$code = rand(0000, 9999);
-		$db->query("INSERT INTO users (phone,createdBy,createdDate, password) VALUES  ('$invitedPhone', '$invitorId', now(), '$code')");
+		$db->query("INSERT INTO 
+			users (phone,createdBy,createdDate, password) 
+			VALUES  ('$invitedPhone', '$invitorId', now(), '$code')
+			");
 		if($db)
 		{
-			$sql = $db->query("SELECT id FROM users ORDER BY id DESC LIMIT 1");
-			$invitedArray = mysqli_fetch_array($sql);
-			$invitedId = $invitedArray['id'];
+			$sql 			= $db->query("SELECT id FROM users ORDER BY id DESC LIMIT 1");
+			$invitedArray 	= mysqli_fetch_array($sql);
+			$invitedId 		= $invitedArray['id'];
 
 			// CEATE THE MONEY ACCOUNT FOR THE PERSON
 			//$sqlmoney = $outCon->query("INSERT INTO members ");
 		}
 	}
 
+	ECHO $invitedId
 	// CHECK IF THE USER IS ALREADY IN THE GROUP
 	$sql = $db->query("SELECT * FROM groupuser WHERE groupId ='$groupId' AND userId='$invitedId'");
 	$checkExits = mysqli_num_rows($sql);
