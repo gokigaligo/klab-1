@@ -173,9 +173,76 @@ function deleteGroup()
 function inviteMember()
 {
 	require('db.php');
-	echo ' -> groupId '.$groupId			= mysqli_real_escape_string($db, $_POST['groupId']);
-	echo '<br/> -> invitorId '.$invitorId			= mysqli_real_escape_string($db, $_POST['invitorId']);
-	echo '<br/> -> invitedPhone '.$invitedPhone		= mysqli_real_escape_string($db, $_POST['invitedPhone']);
+	$groupId			= mysqli_real_escape_string($db, $_POST['groupId']);
+	$invitorId			= mysqli_real_escape_string($db, $_POST['invitorId']);
+	$invitedPhone		= mysqli_real_escape_string($db, $_POST['invitedPhone']);
+
+	$sql = $db->query("SELECT id FROM users WHERE phone =  $invitedPhone");
+	$countUsers = mysqli_num_rows($sql);
+	if($countUsers > 0)
+	{
+		$invitedArray = mysqli_fetch_array($sql);
+		$invitedId = $invitedArray['id'];
+	}
+	else
+	{
+		$code = rand(0000, 9999);
+		$db->query("INSERT INTO users (phone,createdBy,createdDate, password) VALUES  ('$invitedPhone', '$invitorId', now(), '$code')");
+		if($db)
+		{
+			$sql = $db->query("SELECT id FROM users ORDER BY id DESC LIMIT 1");
+			$invitedArray = mysqli_fetch_array($sql);
+			$invitedId = $invitedArray['id'];
+
+			// CEATE THE MONEY ACCOUNT FOR THE PERSON
+			//$sqlmoney = $outCon->query("INSERT INTO members ");
+		}
+	}
+
+	// CHECK IF THE USER IS ALREADY IN THE GROUP
+	$sql = $db->query("SELECT * FROM groupuser WHERE groupId ='$groupId' AND userId='$invitedId'");
+	$checkExits = mysqli_num_rows($sql);
+	if($checkExits > 0)
+	{
+		echo 'This member with '.$invitedPhone.' Is already a member of this group';
+	}
+	else
+	{
+		echo 'GroupId: '.$groupId.' , InvetedId: '.$invitedId.' , InvitorId: '.$invitorId;
+	
+		$sql = $db->query("INSERT INTO groupuser (joined, groupId, userId, createdBy, createdDate) VALUES ('yes','$groupId','$invitedId','$invitorId', now())")or die(mysqli_error());
+
+		if($db)
+		{
+			$gnamesql = $db->query("SELECT groupName FROM groups WHERE id = '$groupId' LIMIT 1");
+			$loopg 		= mysqli_fetch_array($gnamesql);
+			$groupName = $loopg['groupName'];
+			require_once('sms.php');
+			$username   = "cmuhirwa";
+			$apikey     = "2b11603e7dc4c35a64bfdda3ad8d78e48db8a4afc9032a2a57209ba902a21154";
+			$recipients = '+25'.$invitedPhone;
+			$message    = 'You have been invited to join '.$groupName.' (a contribution group on uplus). Install uplus to start. on http://104.236.26.9/app/';// Specify your AfricasTalking shortCode or sender id
+			$from = "uplus";
+
+			$gateway    = new AfricasTalkingGateway($username, $apikey);
+
+			try 
+			{
+				$results = $gateway->sendMessage($recipients, $message, $from);
+				echo 'Member with '.$invitedPhone.' Is Invited';
+				//listGroups();
+			}
+			catch (AfricasTalkingGatewayException $e)
+			{
+				$results.="Encountered an error while sending: ".$e->getMessage();
+				echo 'error';
+			}
+		}
+		else
+		{
+			'The user is not invited';
+		}
+	}*/
 	
 }
 
