@@ -177,6 +177,7 @@ function inviteMember()
 	$invitorId			= mysqli_real_escape_string($db, $_POST['invitorId']);
 	$invitedPhone		= mysqli_real_escape_string($db, $_POST['invitedPhone']);
 
+	echo 'i got the data of: '.$groupId;
 	$sql = $db->query("SELECT id FROM users WHERE phone =  $invitedPhone") or (mysqli_error());
 	$countUsers = mysqli_num_rows($sql);
 	if($countUsers > 0)
