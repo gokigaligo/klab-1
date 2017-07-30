@@ -477,10 +477,10 @@ function contribute(){
 }
 	
 function checkstatus(){
-	$transactionId = $_POST['transactionId'];
+	$myId = $_POST['transactionId'];
 	
 	require('db.php');
-	$sql = $outCon->query("SELECT * FROM mnoapi WHERE myid = '$transactionId' ORDER BY id DESC LIMIT 1");
+	$sql = $outCon->query("SELECT * FROM mnoapi WHERE myid = '$myId' ORDER BY id DESC LIMIT 1");
 		// CALL API
 	$url = 'https://lightapi.torque.co.rw/requestpayment/';
 	$data = array();
@@ -524,7 +524,7 @@ function checkstatus(){
 	$result = file_get_contents($url, false, $context);
 	if ($result === FALSE) 
 	{ 
-		$Update= $outCon->query("UPDATE grouptransactions SET status='NETWORK ERROR' WHERE id = '$transactionId'");
+		$Update= $outCon->query("UPDATE grouptransactions SET status='NETWORK ERROR' WHERE id = '$myId'");
 		
 		echo 'Sorry! We had some network problem connecting to '.$notifyBank.'.<br> Please try again.';	
 	}
@@ -565,14 +565,14 @@ function checkstatus(){
 			'$time', $transactionId, '$policyNumber', '$invoiceNumber',
 			'$phone', '$phone2', '$amount', '$fname', 
 			'$lname', '$nationalId', '$information', '$information2', 
-			'$agentName', '$agentId', '$feedback', '$balance', $contTransactionId
+			'$agentName', '$agentId', '$feedback', '$balance', $myId
 			)
 		")or die(mysqli_error($outCon));
 
 			$returnedinformation	= array();
 		
 			$returnedinformation[] = array(
-		       		"transactionId" => $contTransactionId,
+		       		"transactionId" => $myId,
 		       		"status" => $information
 		    	);
 			header('Content-Type: application/json');
