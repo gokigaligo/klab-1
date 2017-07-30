@@ -220,6 +220,7 @@ function inviteMember()
 		try 
 		{
 			$results = $gateway->sendMessage($recipients, $message, $from);
+			echo 'Member with '.$invitedPhone.' Is Invited';
 			//listGroups();
 		}
 		catch (AfricasTalkingGatewayException $e)
