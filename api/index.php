@@ -651,7 +651,7 @@ function withdrawreject(){
 	{
 		$sqlreq = $outCon->query("
 		INSERT INTO requestsdecisions(requestId, vote, createdBy, createdDate) 
-		VALUES ($requestId, 'NO', '$treasurerId', now())")or die(mysqli_error($outCon));
+		VALUES ($requestId, 'NO', '$treasurerId', now())")or die(mysqli_error());
 		echo 'Thanks for your vote on this request.';
 	}
 	else
