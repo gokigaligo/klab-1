@@ -580,4 +580,83 @@ function checkstatus(){
 			echo $returnedinformation;
 	}
 }
+
+function withdrawrequest(){
+	include('db.php');
+	$groupId			= $_POST['groupId'];
+	$amount 			= $_POST['amount'];
+	$memberId 			= $_POST['memberId'];
+	$withdrawAccount 	= $_POST['withdrawAccount'];
+	$withdrawBank 		= $_POST['withdrawBank'];
+
+	$sqlCheck 	= $outCon->query("SELECT id FROM withdrowrequests WHERE userId = '$memberId' AND (groupId = '$groupId' AND status = 'PENDING')");
+	$counted 	= mysqli_num_rows($sqlCheck);
+	if(!$counted > 0)
+	{
+		$sqlreq = $outCon->query("INSERT INTO withdrowrequests(amount, userId, groupId, withdrawAccount, withdrawBank, status, createdDate, createdBy)
+		 VALUES ('$amount','$memberId', '$groupId', '$withdrawAccount', '$withdrawBank', 'PENDING', now(),'$memberId')")or die (mysqli_error($outCon));
+		if($outCon){
+			echo 'Your request has been sent.';
+		}
+	}
+	else
+	{
+		echo 'Please wait for the first request.';
+	}
+}
+
+function withdrawlist(){
+	include("db.php");
+	$groupId		= mysqli_real_escape_string($db, $_POST['groupId']);
+	$sqlwithdraw	= $outCon->query("SELECT * FROM withdrowrequests WHERE groupId = '$groupId' AND status = 'PENDING'")or die(mysqli_error($outCon));
+	$withdraws 		= array();
+	WHILE($withdraw = mysqli_fetch_array($sqlwithdraw))
+	{
+		$withdraws[] 	= $withdraw;
+	}
+
+	header('Content-Type: application/json');
+	$withdraws = json_encode($withdraws);
+	echo $withdraws;
+}
+
+function withdrawapprove(){
+	include("db.php");
+	$requestId		= mysqli_real_escape_string($db, $_POST['requestId']);
+	$treasurerId	= mysqli_real_escape_string($db, $_POST['treasurerId']);
+	
+	$sqlCheck 	= $outCon->query("SELECT * FROM requestsdecisions WHERE requestId = '$requestId' AND  createdBy = '$treasurerId'");
+	$counted 	= mysqli_num_rows($sqlCheck);
+	if(!$counted > 0)
+	{
+		$sqlreq = $outCon->query("
+		INSERT INTO requestsdecisions(requestId, vote, createdBy, createdDate) 
+		VALUES ($requestId, 'YES', '$treasurerId', now())")or die(mysqli_error($outCon));
+		echo 'Thanks for your vote on this request.';
+	}
+	else
+	{
+		echo 'You have voted already.';
+	}
+}
+
+function withdrawreject(){
+	include("db.php");
+	$requestId		= mysqli_real_escape_string($db, $_POST['requestId']);
+	$treasurerId	= mysqli_real_escape_string($db, $_POST['treasurerId']);
+	
+	$sqlCheck 	= $outCon->query("SELECT * FROM requestsdecisions WHERE requestId = '$requestId' AND  createdBy = '$treasurerId'");
+	$counted 	= mysqli_num_rows($sqlCheck);
+	if(!$counted > 0)
+	{
+		$sqlreq = $outCon->query("
+		INSERT INTO requestsdecisions(requestId, vote, createdBy, createdDate) 
+		VALUES ($requestId, 'NO', '$treasurerId', now())")or die(mysqli_error($outCon));
+		echo 'Thanks for your vote on this request.';
+	}
+	else
+	{
+		echo 'You have voted already.';
+	}
+}
 ?>
