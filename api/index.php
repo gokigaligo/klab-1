@@ -45,9 +45,8 @@ function createGroup()
 	$perPersonType		= mysqli_real_escape_string($db, $_POST['perPersonType']);
 	$perPerson			= mysqli_real_escape_string($db, $_POST['perPerson']);
 	$adminId			= mysqli_real_escape_string($db, $_POST['adminId']);
-	$accountNumber		= mysqli_real_escape_string($db, $_POST['accountNumber']);
-	$bankId				= mysqli_real_escape_string($db, $_POST['bankId']);
-	if($accountNumber == ""){
+	if($accountNumber == "")
+	{
 		$accountNumber = 0;
 		$bankId = 1;
 	}
@@ -68,42 +67,53 @@ function createGroup()
 			$targetAmount, $perPerson,now(),
 			$adminId,'private','$groupTargetType','$perPersonType', '$adminId', now())") or die (mysqli_error($db));
 
-			$sqlid = $db->query("SELECT id FROM groups ORDER BY id DESC LIMIT 1") or die (mysqli_error());
-			$rowid = mysqli_fetch_array($sqlid);
-			$lastid = $rowid['id'];
+
+
 	if($db)
 	{
+		$sqlid = $db->query("SELECT id FROM groups ORDER BY id DESC LIMIT 1") or die (mysqli_error());
+		$rowid = mysqli_fetch_array($sqlid);
+		$lastid = $rowid['id'];
 		
-		$outCon->query("INSERT INTO `groups`(`groupId`, `accountNumber`, `bankId`)
-		VALUES('$lastid','$accountNumber','$bankId')")or die(mysqli_error());
+		$db->query("INSERT INTO groupuser
+		(`joined`, `groupId`, `userId`,`createdBy`, `createdDate`, updatedBy, updatedDate)
+		VALUES('yes','$lastid','$adminId','$adminId', now(), '$adminId', now())")or die(mysqli_error());
 		
-		if($outCon)
+		if($db)
 		{
-			$db->query("INSERT INTO groupuser
-			(`joined`, `groupId`, `userId`,`createdBy`, `createdDate`, updatedBy, updatedDate)
-			VALUES('yes','$lastid','$adminId','$adminId', now(), '$adminId', now())")or die(mysqli_error());
-			if($db)
-			{
-				//listGroups();
-				echo "".$lastid."";
-			}
-			else
-			{
-				echo 'The user not joined';
-			}
+			echo "".$lastid."";
 		}
 		else
 		{
 			// Rollback
 			$db->query("DELETE FROM groups WHERE id = '$lastid'");
-			echo 'Group not created, Money part not made';
+			echo 'The user not joined';
 		}
 	}
 	else
 	{
-		// Rollback
-		$db->query("DELETE FROM groups WHERE id = '$lastid'");
 		echo 'Group not created';
+	}
+}
+
+function createcollection()
+{
+	require('db.php');
+	$groupId			= mysqli_real_escape_string($db, $_POST['groupId']);
+	$accountNumber		= mysqli_real_escape_string($db, $_POST['accountNumber']);
+	$bankId				= mysqli_real_escape_string($db, $_POST['bankId']);
+	$outCon->query("INSERT INTO groups(groupId, accountNumber, bankId)
+		VALUES('$lastid','$accountNumber','$bankId')")or die(mysqli_error());
+		
+	if($outCon)
+	{
+		echo'Collection account added';
+	}
+	else
+	{
+		// Rollback
+		$outCon->query("DELETE FROM groups WHERE id = '$lastid'");
+		echo 'Group not created, Money part not made';
 	}
 }
 
@@ -255,7 +265,8 @@ function exitGroup()
 {
 	$groupId 	= $_POST['groupId'];
 	$memberId 	= $_POST['memberId'];
-	
+	UPDATE 
+
 }
 
 function listMembers()
