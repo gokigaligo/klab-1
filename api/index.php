@@ -356,7 +356,8 @@ function signup()
 	}
 }
 
-function updateProfile(){
+function updateProfile()
+{
 	require('db.php');
 	$userId				= mysqli_real_escape_string($db, $_POST['userId']);
 	$userName			= mysqli_real_escape_string($db, $_POST['userName']);
@@ -371,7 +372,8 @@ function updateProfile(){
 	}
 }
 
-function contribute(){
+function contribute()
+{
 
 	$memberId	= $_POST['memberId'];
 	$groupId	= $_POST['groupId'];
@@ -499,7 +501,8 @@ function contribute(){
 	}
 }
 	
-function checkstatus(){
+function checkstatus()
+{
 	$myId = $_POST['transactionId'];
 	
 	require('db.php');
@@ -604,7 +607,8 @@ function checkstatus(){
 	}
 }
 
-function withdrawrequest(){
+function withdrawrequest()
+{
 	include('db.php');
 	$groupId			= $_POST['groupId'];
 	$amount 			= $_POST['amount'];
@@ -628,7 +632,8 @@ function withdrawrequest(){
 	}
 }
 
-function withdrawlist(){
+function withdrawlist()
+{
 	include("db.php");
 	$groupId		= mysqli_real_escape_string($db, $_POST['groupId']);
 	$sqlwithdraw	= $outCon->query("SELECT * FROM withdrowrequests WHERE groupId = '$groupId' AND status = 'PENDING'")or die(mysqli_error($outCon));
@@ -643,7 +648,8 @@ function withdrawlist(){
 	echo $withdraws;
 }
 
-function withdrawapprove(){
+function withdrawapprove()
+{
 	include("db.php");
 	$requestId		= mysqli_real_escape_string($db, $_POST['requestId']);
 	$treasurerId	= mysqli_real_escape_string($db, $_POST['treasurerId']);
@@ -663,7 +669,8 @@ function withdrawapprove(){
 	}
 }
 
-function withdrawreject(){
+function withdrawreject()
+{
 	include("db.php");
 	$requestId		= mysqli_real_escape_string($db, $_POST['requestId']);
 	$treasurerId	= mysqli_real_escape_string($db, $_POST['treasurerId']);
