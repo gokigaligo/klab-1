@@ -11,7 +11,6 @@ IFNULL(
 	FROM rtgs.groups g
 
 -- TOTAL WITHDRAL
-
 SELECT g.groupId, g.accountNumber, 
 IFNULL(
 		(

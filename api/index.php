@@ -20,7 +20,7 @@ function listGroups()
 {
 	include("db.php");
 	$memberId		= mysqli_real_escape_string($db, $_POST['memberId']);
-	$sqlgroups 		= $db->query("SELECT  u.groupId, u.syncstatus, u.groupName, u.groupTargetType, u.perPersonType, u.targetAmount, u.perPerson, u.adminId, u.adminName, u.groupDesc, r.Balance groupBalance
+	$sqlgroups 		= $db->query("SELECT u.groupId, u.updatedDate , u.syncstatus, u.groupName, u.groupTargetType, u.perPersonType, u.targetAmount, u.perPerson, u.adminId, u.adminName, u.groupDesc, r.Balance groupBalance
 		FROM uplus.members u
 		INNER JOIN rtgs.groupbalance r 
 		WHERE u.groupId = r.groupId
@@ -29,8 +29,6 @@ function listGroups()
 	WHILE($group 	= mysqli_fetch_array($sqlgroups))
 	{
 		$groups[] 	= $group;
-		$groupId 	= $group['groupId'];
-		$sychronize = $db->query("UPDATE groups SET syncstatus = 'Yes' WHERE id ='$groupId' AND syncstatus = 'No'")or die(mysqli_error());
 	}
 
 	header('Content-Type: application/json');
@@ -250,6 +248,13 @@ function inviteMember()
 			'The user is not invited';
 		}
 	}
+	
+}
+
+function exitGroup()
+{
+	$groupId 	= $_POST['groupId'];
+	$memberId 	= $_POST['memberId'];
 	
 }
 
