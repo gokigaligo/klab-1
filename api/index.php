@@ -45,11 +45,6 @@ function createGroup()
 	$perPersonType		= mysqli_real_escape_string($db, $_POST['perPersonType']);
 	$perPerson			= mysqli_real_escape_string($db, $_POST['perPerson']);
 	$adminId			= mysqli_real_escape_string($db, $_POST['adminId']);
-	if($accountNumber == "")
-	{
-		$accountNumber = 0;
-		$bankId = 1;
-	}
 	
 	$sqliAdmin = $db->query("SELECT phone FROM users WHERE id = '$adminId'");
 	$countAdmins = mysqli_num_rows($sqliAdmin);
@@ -102,18 +97,30 @@ function createcollection()
 	$groupId			= mysqli_real_escape_string($db, $_POST['groupId']);
 	$accountNumber		= mysqli_real_escape_string($db, $_POST['accountNumber']);
 	$bankId				= mysqli_real_escape_string($db, $_POST['bankId']);
-	$outCon->query("INSERT INTO groups(groupId, accountNumber, bankId)
-		VALUES('$lastid','$accountNumber','$bankId')")or die(mysqli_error());
-		
-	if($outCon)
+	
+	//CHECH IF THE ACCOUNT WASENT THERE BEFORE:
+	$sql = $outCon->query("SELECT id FROM groups WHERE groupId= '$groupId' LIMIT 1");
+	$check = mysqli_num_rows($sql);
+	if($check > 0)
 	{
-		echo'Collection account added';
+		$row = mysqli_fetch_array($sql);
+		$collectionId = $row['id'];
+		$sql =  $outCon->query("UPDATE groups SET groupId = '$groupId', accountNumber = '$accountNumber', bankId = '$bankId' WHERE id = '$collectionId'");	
+		echo 'updated the existing account';
 	}
 	else
 	{
-		// Rollback
-		$outCon->query("DELETE FROM groups WHERE id = '$lastid'");
-		echo 'Group not created, Money part not made';
+		$outCon->query("INSERT INTO groups(groupId, accountNumber, bankId)
+		VALUES('$groupId','$accountNumber','$bankId')")or die(mysqli_error());
+		
+		if($outCon)
+		{
+			echo'Collection account added';
+		}
+		else
+		{
+			echo 'Group not created, Money part not made';
+		}
 	}
 }
 
@@ -265,8 +272,7 @@ function exitGroup()
 {
 	$groupId 	= $_POST['groupId'];
 	$memberId 	= $_POST['memberId'];
-	UPDATE 
-
+	 
 }
 
 function listMembers()
