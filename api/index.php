@@ -340,20 +340,20 @@ function signup()
 
 	$gateway    = new AfricasTalkingGateway($username, $apikey);
 
-	try 
-	{
-		$results = $gateway->sendMessage($recipients, $message, $from);
+	//try 
+	//{
+		//$results = $gateway->sendMessage($recipients, $message, $from);
 		
 		header('Content-Type: application/json');
 		$signInfo = json_encode($signInfo);
 		echo '['.$signInfo.']';
 
-	}
-	catch (AfricasTalkingGatewayException $e)
-	{
-		$results.="Encountered an error while sending: ".$e->getMessage();
-		echo $results;
-	}
+	//}
+	//catch (AfricasTalkingGatewayException $e)
+	//{
+	//	$results.="Encountered an error while sending: ".$e->getMessage();
+	//	echo $results;
+	//}
 }
 
 function updateProfile()
