@@ -65,10 +65,10 @@ function createGroup()
 	$db->query("INSERT INTO groups
 		(groupName, adminId, adminPhone, 
 		 targetAmount, perPerson, createdDate,
-		 createdBy, state, groupTargetType, perPersonType)
+		 createdBy, state, groupTargetType, perPersonType, updatededBy, updatedDate)
 		VALUES('$groupName',$adminId,'$adminPhone',
 			$targetAmount, $perPerson,now(),
-			$adminId,'private','$groupTargetType','$perPersonType')") or die (mysqli_error());
+			$adminId,'private','$groupTargetType','$perPersonType', '$adminId', now())") or die (mysqli_error());
 
 			$sqlid = $db->query("SELECT id FROM groups ORDER BY id DESC LIMIT 1") or die (mysqli_error());
 			$rowid = mysqli_fetch_array($sqlid);
@@ -82,8 +82,8 @@ function createGroup()
 		if($outCon)
 		{
 			$db->query("INSERT INTO groupuser
-			(`joined`, `groupId`, `userId`,`createdBy`, `createdDate`)
-			VALUES('yes','$lastid','$adminId','$adminId', now())")or die(mysqli_error());
+			(`joined`, `groupId`, `userId`,`createdBy`, `createdDate`, updatededBy, updatedDate)
+			VALUES('yes','$lastid','$adminId','$adminId', now(), '$adminId', now())")or die(mysqli_error());
 			if($db)
 			{
 				//listGroups();
@@ -192,8 +192,8 @@ function inviteMember()
 	{
 		$code = rand(0000, 9999);
 		$db->query("INSERT INTO 
-			users (phone,createdBy,createdDate, password) 
-			VALUES  ('$invitedPhone', '$invitorId', now(), '$code')
+			users (phone,createdBy,createdDate, password, updatededBy, updatedDate) 
+			VALUES  ('$invitedPhone', '$invitorId', now(), '$code', 'invitorId', now() )
 			");
 		if($db)
 		{
@@ -216,7 +216,8 @@ function inviteMember()
 	else
 	{
 		
-		$sql = $db->query("INSERT INTO groupuser (joined, groupId, userId, createdBy, createdDate) VALUES ('yes','$groupId','$invitedId','$invitorId', now())")or die(mysqli_error());
+		$sql = $db->query("INSERT INTO groupuser (joined, groupId, userId, createdBy, createdDate, updatededBy, updatedDate) 
+			VALUES ('yes','$groupId','$invitedId','$invitorId', now(), '$invitorId', now())")or die(mysqli_error());
 
 		if($db)
 		{
@@ -293,8 +294,8 @@ function signup()
 	{
 		$code = rand(1000, 9999);
 		$sqlsavePin = $db->query("INSERT INTO `users`(
-		phone, active, createdDate, password,visits) 
-		VALUES('$phoneNumber','0',now(),'$code','0')")or die (mysqli_error());
+		phone, active, createdDate, password,visits, updatededBy, updatedDate) 
+		VALUES('$phoneNumber','0',now(),'$code','0', '1', now())")or die (mysqli_error());
 
 		$sqlcheckPin = $db->query("SELECT *  FROM users ORDER BY id DESC LIMIT 1");
 		while ($rowpin = mysqli_fetch_array($sqlcheckPin)) {
@@ -373,9 +374,9 @@ function contribute(){
 
 		$sql = $outCon->query("INSERT INTO grouptransactions(
 			memberId, groupId, amount, fromPhone, 
-			bankId, operation, status)
+			bankId, operation, status, updatededBy, updatedDate)
 		 	VALUES ('$memberId', '$groupId', '$amount', '$fromPhone', 
-		 	'$bankId', 'DEBIT', 'CALLED')")
+		 	'$bankId', 'DEBIT', 'CALLED', '1', now())")
 		 	 or mysqli_error($outCon);
 
 		if($outCon){
@@ -593,8 +594,8 @@ function withdrawrequest(){
 	$counted 	= mysqli_num_rows($sqlCheck);
 	if(!$counted > 0)
 	{
-		$sqlreq = $outCon->query("INSERT INTO withdrowrequests(amount, userId, groupId, withdrawAccount, withdrawBank, status, createdDate, createdBy)
-		 VALUES ('$amount','$memberId', '$groupId', '$withdrawAccount', '$withdrawBank', 'PENDING', now(),'$memberId')")or die (mysqli_error($outCon));
+		$sqlreq = $outCon->query("INSERT INTO withdrowrequests(amount, userId, groupId, withdrawAccount, withdrawBank, status, createdDate, createdBy, updatededBy, updatedDate)
+		 VALUES ('$amount','$memberId', '$groupId', '$withdrawAccount', '$withdrawBank', 'PENDING', now(),'$memberId', '$memberId', now())")or die (mysqli_error($outCon));
 		if($outCon){
 			echo 'Your request has been sent.';
 		}
@@ -630,8 +631,8 @@ function withdrawapprove(){
 	if(!$counted > 0)
 	{
 		$sqlreq = $outCon->query("
-		INSERT INTO requestsdecisions(requestId, vote, createdBy, createdDate) 
-		VALUES ($requestId, 'YES', '$treasurerId', now())")or die(mysqli_error($outCon));
+		INSERT INTO requestsdecisions(requestId, vote, createdBy, createdDate, updatededBy, updatedDate) 
+		VALUES ($requestId, 'YES', '$treasurerId', now(), '$treasurerId', now())")or die(mysqli_error($outCon));
 		echo 'Thanks for your vote on this request.';
 	}
 	else
@@ -650,8 +651,8 @@ function withdrawreject(){
 	if(!$counted > 0)
 	{
 		$sqlreq = $outCon->query("
-		INSERT INTO requestsdecisions(requestId, vote, createdBy, createdDate) 
-		VALUES ($requestId, 'NO', '$treasurerId', now())")or die(mysqli_error());
+		INSERT INTO requestsdecisions(requestId, vote, createdBy, createdDate, updatededBy, updatedDate) 
+		VALUES ($requestId, 'NO', '$treasurerId', now(), '$treasurerId', now())")or die(mysqli_error());
 		echo 'Thanks for your vote on this request.';
 	}
 	else
