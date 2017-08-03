@@ -1,29 +1,14 @@
-<?php
-function uploadImage($image,$tmp){
-	echo $target="../groupimg/" .basename($image);
-	if(move_uploaded_file($tmp, $target))
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
+<?php 
 
-if(isset($_FILES['image']['name'])){
-		echo $name=$_FILES['image']['name'];
-		echo '<br/>'.$tmp=$_FILES['image']['tmp_name'];
+	$file_path = "../groupimg/";
 
-		$state=uploadImage($name,$tmp);
+	$file_path = $file_path . basename($_FILES['uploaded_file']['name']);
 
-		if($state==true)
-		{
-			echo "image uploaded success";
-		}
-		else
-		{
-			echo "image uploaded failed";
-		}
+	if(move_uploaded_file($_FILES['uploaded_file']['tmp_name'],$file_path))	{
+		echo "success";
+	}else {
+		echo "error";
 	}
-?>
+
+
+ ?>
