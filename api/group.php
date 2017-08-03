@@ -1,17 +1,14 @@
-<?php
-//$image=$_POST['image'];
-//$name=$_POST['name'];
-//$uploadpath="../groupimg/$name.jpg";
-//file_put_contents($uploadpath,base64_decode($image));
-//echo('image uploaded successfully');
 
-if(isset($_POST['name']))
+<?php
+function uploadImage($image,$tmp){
+$target="./" .basename($image);
+if(move_uploaded_file($tmp, $target))
 {
-echo $_POST['name'];
-if ($_FILES['image']['tmp_name'] != "") {
-	    // Place image in the folder 
-	    move_uploaded_file($_FILES['fileField']['tmp_name'], "../groupimg/testing.jpg");
-	}
+	return true;
+}
+else
+{
+	return false;
+}
 }
 ?>
-
