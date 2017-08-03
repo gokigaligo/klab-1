@@ -75,6 +75,7 @@ function createGroup()
 		VALUES('yes','$lastid','$adminId','$adminId', now(), '$adminId', now())")or die(mysqli_error());
 
 		if(!$imageoldname == 0)
+		{
 			rename("../groupimg/".$imageoldname, "../groupimg/".$lastid);
 		}
 
