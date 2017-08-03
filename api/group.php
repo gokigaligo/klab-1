@@ -1,6 +1,6 @@
 <?php
 function uploadImage($image,$tmp){
-	$target="http://104.236.26.9/groupimg/" .basename($image);
+	$target="../groupimg/" .basename($image);
 	if(move_uploaded_file($tmp, $target))
 	{
 		return true;
