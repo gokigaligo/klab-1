@@ -4,7 +4,7 @@
 	<title>Testing uploading</title>
 </head>
 <body>
-<form action="testing.php" method="POST" enctype="multipart/form-data">
+<form action="testimg.php" method="POST" enctype="multipart/form-data">
 	<input id="image" class="data" type="file" name="image" placeholder="optional image Here" onchange="checkPhoto(this)">
 	<input type="submit" value="uploading">
 </form>
