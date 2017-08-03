@@ -1,6 +1,6 @@
 <?php
 function uploadImage($image,$tmp){
-	$target="../groupimg/" .basename($image);
+	echo $target="../groupimg/" .basename($image);
 	if(move_uploaded_file($tmp, $target))
 	{
 		return true;
