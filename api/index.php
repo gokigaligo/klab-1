@@ -74,7 +74,9 @@ function createGroup()
 		(`joined`, `groupId`, `userId`,`createdBy`, `createdDate`, updatedBy, updatedDate)
 		VALUES('yes','$lastid','$adminId','$adminId', now(), '$adminId', now())")or die(mysqli_error());
 
-		rename("../groupimg/".$imageoldname, "../groupimg/".$lastid);
+		if(!$imageoldname == 0)
+			rename("../groupimg/".$imageoldname, "../groupimg/".$lastid);
+		}
 
 		if($db)
 		{
@@ -121,7 +123,7 @@ function createcollection()
 		}
 		else
 		{
-			echo 'Group not created, Money part not made';
+			echo 'Collection account is not created';
 		}
 	}
 }
@@ -154,7 +156,6 @@ function modifyGroup()
 		'group not UPDATED';
 	}
 }
-
 
 // NO ONE SHOULD EVER DELETE A GROUP, INSTEAD HE SHOULD LEAVE IT TO OTHERS 
 function deleteGroup()
