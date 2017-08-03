@@ -1,7 +1,29 @@
 <?php
-$image=$_POST['image'];
-$name=$_POST['name'];
-$uploadpath="../groupimg/$name.jpg";
-file_put_contents($uploadpath,base64_decode($image));
-echo('groupimage uploaded successfully');
+function uploadImage($image,$tmp){
+	$target="http://104.236.26.9/groupimg/" .basename($image);
+	if(move_uploaded_file($tmp, $target))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+if(isset($_FILES['image']['name'])){
+		echo $name=$_FILES['image']['name'];
+		echo '<br/>'.$tmp=$_FILES['image']['tmp_name'];
+
+		$state=uploadImage($name,$tmp);
+
+		if($state==true)
+		{
+			echo "image uploaded success";
+		}
+		else
+		{
+			echo "image uploaded failed";
+		}
+	}
 ?>
