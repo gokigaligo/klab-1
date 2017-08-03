@@ -38,13 +38,13 @@ function listGroups()
 function createGroup()
 {
 	require('db.php');
-	$groupName			= mysqli_real_escape_string($db, $_POST['groupName']);
-	$groupTargetType	= mysqli_real_escape_string($db, $_POST['groupTargetType']);
-	$targetAmount		= mysqli_real_escape_string($db, $_POST['targetAmount']);
-	$perPersonType		= mysqli_real_escape_string($db, $_POST['perPersonType']);
-	$perPerson			= mysqli_real_escape_string($db, $_POST['perPerson']);
-	$adminId			= mysqli_real_escape_string($db, $_POST['adminId']);
-	$imageoldname		= mysqli_real_escape_string($db, $_POST['imageoldname']);
+	echo '<br/>->'.$groupName			= mysqli_real_escape_string($db, $_POST['groupName']);
+	echo '<br/>->'.$groupTargetType	= mysqli_real_escape_string($db, $_POST['groupTargetType']);
+	echo '<br/>->'.$targetAmount		= mysqli_real_escape_string($db, $_POST['targetAmount']);
+	echo '<br/>->'.$perPersonType		= mysqli_real_escape_string($db, $_POST['perPersonType']);
+	echo '<br/>->'.$perPerson			= mysqli_real_escape_string($db, $_POST['perPerson']);
+	echo '<br/>->'.$adminId			= mysqli_real_escape_string($db, $_POST['adminId']);
+	echo '<br/>->'.$imageoldname		= mysqli_real_escape_string($db, $_POST['imageoldname']);
 	
 	$sqliAdmin = $db->query("SELECT phone FROM users WHERE id = '$adminId'");
 	$countAdmins = mysqli_num_rows($sqliAdmin);
