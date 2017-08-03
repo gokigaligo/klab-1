@@ -11,6 +11,7 @@
 </body>
 </html>
 <?php
+
 include("group.php");
 	if(isset($_FILES['image']['name'])){
 		$name=$_FILES['image']['name'];
