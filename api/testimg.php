@@ -15,7 +15,7 @@
 include("group.php");
 	if(isset($_FILES['image']['name'])){
 		echo $name=$_FILES['image']['name'];
-		echo $tmp=$_FILES['image']['tmp_name'];
+		echo '<br/>'.$tmp=$_FILES['image']['tmp_name'];
 
 		$state=uploadImage($name,$tmp);
 
