@@ -1,30 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Testing uploading</title>
+	<title></title>
 </head>
 <body>
-<form action="index.php" method="POST" enctype="multipart/form-data">
-	<input id="image" class="data" type="file" name="image" placeholder="optional image Here" onchange="checkPhoto(this)">
-	<input type="submit" value="uploading">
+
+<form action="104.236.26.9/api/group.php" method="post" enctype="multipart/form-data">
+	<input type="file" name="image">
+	<input type="text" name="name">
+	<input type="submit" name="save">
 </form>
 </body>
 </html>
-<?php
-include("testuploading.php");
-	if(isset($_FILES['image']['name'])){
-		$name=$_FILES['image']['name'];
-		$tmp=$_FILES['image']['tmp_name'];
-
-		$state=uploadImage($name,$tmp);
-
-		if($state==true)
-		{
-			echo "image uploaded success";
-		}
-		else
-		{
-			echo "image uploaded failed";
-		}
-	}
-?>
