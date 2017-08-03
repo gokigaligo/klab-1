@@ -5,11 +5,13 @@
 //file_put_contents($uploadpath,base64_decode($image));
 //echo('image uploaded successfully');
 
-
-
+if(isset($_POST['name']))
+{
+echo $_POST['name'];
 if ($_FILES['image']['tmp_name'] != "") {
 	    // Place image in the folder 
 	    move_uploaded_file($_FILES['fileField']['tmp_name'], "../groupimg/testing.jpg");
 	}
+}
 ?>
 
