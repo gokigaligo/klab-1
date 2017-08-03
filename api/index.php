@@ -44,6 +44,7 @@ function createGroup()
 	$perPersonType		= mysqli_real_escape_string($db, $_POST['perPersonType']);
 	$perPerson			= mysqli_real_escape_string($db, $_POST['perPerson']);
 	$adminId			= mysqli_real_escape_string($db, $_POST['adminId']);
+	$imageoldname		= mysqli_real_escape_string($db, $_POST['imageoldname']);
 	
 	$sqliAdmin = $db->query("SELECT phone FROM users WHERE id = '$adminId'");
 	$countAdmins = mysqli_num_rows($sqliAdmin);
@@ -72,7 +73,9 @@ function createGroup()
 		$db->query("INSERT INTO groupuser
 		(`joined`, `groupId`, `userId`,`createdBy`, `createdDate`, updatedBy, updatedDate)
 		VALUES('yes','$lastid','$adminId','$adminId', now(), '$adminId', now())")or die(mysqli_error());
-		
+
+		rename("../groupimg/".$imageoldname, "../groupimg/".$lastid);
+
 		if($db)
 		{
 			echo "".$lastid."";
