@@ -1,4 +1,3 @@
-
 <?php
 if ($_SERVER["REQUEST_METHOD"]=="POST") 
 {
@@ -134,34 +133,18 @@ function modifyGroup()
 	$perPerson			= mysqli_real_escape_string($db, $_POST['perPerson']);
 	$adminId			= mysqli_real_escape_string($db, $_POST['adminId']);
 	$adminPhone			= mysqli_real_escape_string($db, $_POST['adminPhone']);
-	$accountNumber		= mysqli_real_escape_string($db, $_POST['accountNumber']);
-	$bankId				= mysqli_real_escape_string($db, $_POST['bankId']);
 	$groupId			= mysqli_real_escape_string($db, $_POST['groupId']);
-	$state				= mysqli_real_escape_string($db, $_POST['state']);
 	
 	$db->query("UPDATE groups SET 
 		groupName ='$groupName', adminId=$adminId, adminPhone='$adminPhone', 
 		targetAmount=$targetAmount, perPerson='$perPerson', updatedDate= now(),
 		updatedBy='$adminId', groupTargetType='$groupTargetType', perPersonType='$perPersonType'
-		, state='$state' WHERE id= '$groupId'
-		") or die (mysqli_error());
+		, WHERE id= '$groupId'
+		") or die (mysqli_error($db));
 	
 	if($db)
 	{
-		
-		$outCon->query("UPDATE groups SET 
-		 accountNumber='$accountNumber', bankId='$bankId'
-		WHERE groupId = '$groupId'
-		")or die(mysqli_error());
-		
-		if($outCon)
-		{ 
-			//listGroups();
-		}
-		else
-		{
-			echo 'money part not UPDATED';
-		}
+		echo 'thanks the group is updated';
 	}
 	else
 	{
@@ -169,19 +152,21 @@ function modifyGroup()
 	}
 }
 
+
+// NO ONE SHOULD EVER DELETE A GROUP, INSTEAD HE SHOULD LEAVE IT TO OTHERS 
 function deleteGroup()
 {
 	require('db.php');
 	$groupId			= mysqli_real_escape_string($db, $_POST['groupId']);
 	$adminId			= mysqli_real_escape_string($db, $_POST['adminId']);
 	$db->query("UPDATE groups SET 
-		archive ='yes'
+		archive ='yes', archivedDate = now(), archivedBy = '$adminId'
 		WHERE id='$groupId' AND adminId=$adminId
 		") or die (mysqli_error());
 	
 	if($db)
 	{
-		//listGroups();
+		'the group is Deleted';
 	}
 	else
 	{
@@ -248,31 +233,40 @@ function inviteMember()
 
 			$gateway    = new AfricasTalkingGateway($username, $apikey);
 
-			try 
-			{
-				$results = $gateway->sendMessage($recipients, $message, $from);
-				echo 'Member with '.$invitedPhone.' is Invited';
+			// try 
+			// {
+			// 	$results = $gateway->sendMessage($recipients, $message, $from);
+			 	echo 'Member with '.$invitedPhone.' is Invited';
 				//listGroups();
-			}
-			catch (AfricasTalkingGatewayException $e)
-			{
-				$results.="Encountered an error while sending: ".$e->getMessage();
-				echo 'error';
-			}
+			// }
+			// catch (AfricasTalkingGatewayException $e)
+			// {
+			// 	$results.="Encountered an error while sending: ".$e->getMessage();
+			// 	echo 'error';
+			// }
 		}
 		else
 		{
 			'The user is not invited';
 		}
-	}
-	
+	}	
 }
 
 function exitGroup()
 {
+	include "db.php";
 	$groupId 	= $_POST['groupId'];
-	$memberId 	= $_POST['memberId'];
-	 
+	$memberId 	= $_POST['memberId'];	
+	
+	$sql = $db->query("UPDATE groupuser SET archive = 'YES', archivedDate = now() WHERE groupId = '$groupId' AND userId = '$memberId'")or die(mysqli_error($db));
+	if($db)
+	{
+		echo 'You are no longer a member of this group.';
+	}
+	else
+	{
+		echo 'You are not in this group.';
+	}
 }
 
 function listMembers()
