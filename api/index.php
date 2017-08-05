@@ -44,7 +44,7 @@ function createGroup()
 	$perPersonType		= mysqli_real_escape_string($db, $_POST['perPersonType']);
 	$perPerson			= mysqli_real_escape_string($db, $_POST['perPerson']);
 	$adminId			= mysqli_real_escape_string($db, $_POST['adminId']);
-	$imageoldname		= mysqli_real_escape_string($db, $_POST['imageoldname']);
+	echo $imageoldname		= mysqli_real_escape_string($db, $_POST['imageoldname']);
 	
 	$sqliAdmin = $db->query("SELECT phone FROM users WHERE id = '$adminId'");
 	$countAdmins = mysqli_num_rows($sqliAdmin);
