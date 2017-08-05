@@ -133,19 +133,18 @@ function modifyGroup()
 {
 	require('db.php');
 	$groupName			= mysqli_real_escape_string($db, $_POST['groupName']);
-	$groupTargetType	= mysqli_real_escape_string($db, $_POST['groupTargetType']);
-	$targetAmount		= mysqli_real_escape_string($db, $_POST['targetAmount']);
-	$perPersonType		= mysqli_real_escape_string($db, $_POST['perPersonType']);
+	$groupTargetType		= mysqli_real_escape_string($db, $_POST['groupTargetType']);
+	$targetAmount			= mysqli_real_escape_string($db, $_POST['targetAmount']);
+	$perPersonType			= mysqli_real_escape_string($db, $_POST['perPersonType']);
 	$perPerson			= mysqli_real_escape_string($db, $_POST['perPerson']);
 	$adminId			= mysqli_real_escape_string($db, $_POST['adminId']);
-	$adminPhone			= mysqli_real_escape_string($db, $_POST['adminPhone']);
 	$groupId			= mysqli_real_escape_string($db, $_POST['groupId']);
 	
 	$db->query("UPDATE groups SET 
-		groupName ='$groupName', adminId=$adminId, adminPhone='$adminPhone', 
+		groupName ='$groupName', 
 		targetAmount=$targetAmount, perPerson='$perPerson', updatedDate= now(),
 		updatedBy='$adminId', groupTargetType='$groupTargetType', perPersonType='$perPersonType'
-		, WHERE id= '$groupId'
+		, WHERE id= '$groupId' AND adminId = '$adminId'
 		") or die (mysqli_error($db));
 	
 	if($db)
