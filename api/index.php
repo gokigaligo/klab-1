@@ -144,7 +144,7 @@ function modifyGroup()
 		groupName ='$groupName', 
 		targetAmount=$targetAmount, perPerson='$perPerson', updatedDate= now(),
 		updatedBy='$adminId', groupTargetType='$groupTargetType', perPersonType='$perPersonType'
-		, WHERE id= '$groupId' AND adminId = '$adminId'
+		 WHERE id= '$groupId' AND adminId = '$adminId'
 		") or die (mysqli_error($db));
 	
 	if($db)
