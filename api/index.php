@@ -285,7 +285,8 @@ function listMembers()
 		   "memberId"        => $member['memberId'],
 		   "memberPhone"        => $member['memberPhone'],
 		   "memberName"        	=> $member['memberName'],
-		   "groupId"        	=> $member['groupId']
+		   "groupId"        	=> $member['groupId'],
+		   "memberContribution	=> "0"
 		   );
 		
 	}	
