@@ -76,7 +76,7 @@ function createGroup()
 
 		if(!$imageoldname == 0)
 		{
-			rename("../groupimg/".$imageoldname, "../groupimg/".$lastid."jpg");
+			//rename("../groupimg/".$imageoldname, "../groupimg/".$lastid."jpg");
 		}
 
 		if($db)
